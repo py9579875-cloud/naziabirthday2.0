@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday, Nazia! ✨</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-deep: #0B070C;
+      --bg-card: #160E18;
+      --bg-elevated: #211524;
+      --rose-gold: #E8A598;
+      --champagne: #F5D0A9;
+      --gold: #D4AF37;
+      --cream: #FDF6F0;
+      --muted: #B8A5B0;
+      --border: rgba(232, 165, 152, 0.22);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--bg-deep);
+      color: var(--cream);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    .floating-hearts {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .heart-particle {
+      position: absolute;
+      bottom: -30px;
+      color: rgba(232, 165, 152, 0.22);
+      font-size: 16px;
+      animation: floatUp linear infinite;
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(0.8); opacity: 0; }
+      20% { opacity: 0.6; }
+      100% { transform: translateY(-110vh) scale(1.2); opacity: 0; }
+    }
+
+    #confetti-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11, 7, 12, 0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .nav-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      color: var(--champagne);
+      letter-spacing: 0.5px;
+    }
+    .nav-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn-sm {
+      background: var(--bg-elevated);
+      color: var(--cream);
+      border: 1px solid var(--border);
+      padding: 7px 14px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: 0.25s;
+    }
+    .btn-sm:hover { border-color: var(--rose-gold); background: #2D1D31; }
+
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 0 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 72px 16px 56px;
+      background: radial-gradient(circle at 50% 35%, rgba(232, 165, 152, 0.14), transparent 65%);
+    }
+    .badge {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 999px;
+      background: rgba(232, 165, 152, 0.12);
+      border: 1px solid var(--border);
+      color: var(--champagne);
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.1rem, 5vw, 3.2rem);
+      font-weight: 500;
+      color: var(--cream);
+    }
+    .hero .script-name {
+      display: block;
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(3.8rem, 10vw, 6rem);
+      color: var(--rose-gold);
+      line-height: 1.1;
+      margin: 6px 0 16px;
+      text-shadow: 0 0 30px rgba(232, 165, 152, 0.35);
+    }
+    .hero p {
+      max-width: 580px;
+      margin: 0 auto 14px;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+    .hero .byline {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      color: var(--champagne);
+      margin-bottom: 28px;
+      font-size: 1.05rem;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #E8A598, #D48C7E);
+      color: #160A12;
+      font-weight: 600;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 999px;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 8px 28px rgba(232, 165, 152, 0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 34px rgba(232, 165, 152, 0.5);
+    }
+
+    section { padding: 54px 0; border-top: 1px solid rgba(255,255,255,0.05); }
+    .sec-header { text-align: center; margin-bottom: 34px; }
+    .sec-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.75rem, 4vw, 2.3rem);
+      color: var(--champagne);
+      margin-bottom: 8px;
+    }
+    .sec-header p { color: var(--muted); font-size: 0.95rem; }
+
+    /* Interactive Birthday Cake */
+    .cake-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 40px 20px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.45);
+    }
+    .candles {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 8px;
+    }
+    .candle {
+      width: 14px;
+      height: 54px;
+      background: linear-gradient(to bottom, #FFF5EB, #E8A598);
+      border-radius: 4px;
+      position: relative;
+      cursor: pointer;
+    }
+    .flame {
+      position: absolute;
+      top: -22px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 14px;
+      height: 20px;
+      background: radial-gradient(circle, #FFF7AE 20%, #FF9E2C 70%, transparent 100%);
+      border-radius: 50% 50% 35% 35%;
+      box-shadow: 0 0 18px #FFAE42;
+      animation: flicker 0.9s infinite alternate;
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    .candle.out .flame { opacity: 0; transform: translateX(-50%) scale(0); }
+    @keyframes flicker {
+      0% { transform: translateX(-50%) scale(1) rotate(-2deg); }
+      100% { transform: translateX(-50%) scale(1.08) rotate(2deg); }
+    }
+    .cake-tier-top {
+      width: 210px; height: 48px;
+      background: linear-gradient(180deg, #3B2038, #281426);
+      border: 2px solid var(--rose-gold);
+      border-radius: 14px 14px 4px 4px;
+      margin: 0 auto;
+    }
+    .cake-tier-bottom {
+      width: 270px; height: 62px;
+      background: linear-gradient(180deg, #2D172B, #1D0E1C);
+      border: 2px solid var(--champagne);
+      border-radius: 10px 10px 18px 18px;
+      margin: 0 auto 22px;
+    }
+    .wish-reveal {
+      display: none;
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: 14px;
+      background: rgba(212, 175, 55, 0.12);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      color: var(--champagne);
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+    }
+
+    /* Photo Galleries */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 18px;
+    }
+    .photo-frame {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 10px;
+      text-align: center;
+      box-shadow: 0 10px 28px rgba(0,0,0,0.4);
+    }
+    .photo-frame img {
+      width: 100%;
+      height: 270px;
+      object-fit: cover;
+      border-radius: 12px;
+      background: #1F1422;
+      display: block;
+    }
+    .photo-caption {
+      margin-top: 10px;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      color: var(--champagne);
+      font-size: 0.92rem;
+    }
+
+    /* Polaroids */
+    .polaroid-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 22px;
+    }
+    .polaroid {
+      perspective: 1000px;
+      height: 320px;
+      cursor: pointer;
+    }
+    .polaroid-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.7s;
+      transform-style: preserve-3d;
+    }
+    .polaroid.flipped .polaroid-inner { transform: rotateY(180deg); }
+    .polaroid-front, .polaroid-back {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      border-radius: 16px;
+      padding: 12px 12px 20px;
+      border: 1px solid var(--border);
+    }
+    .polaroid-front {
+      background: #FAF3EC;
+      color: #23141E;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .polaroid-front img {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      border-radius: 10px;
+      background: #2A1B2E;
+    }
+    .polaroid-front span {
+      font-family: 'Great Vibes', cursive;
+      font-size: 1.5rem;
+      text-align: center;
+      color: #3A1D2E;
+    }
+    .polaroid-back {
+      background: var(--bg-elevated);
+      color: var(--cream);
+      transform: rotateY(180deg);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 24px;
+    }
+    .polaroid-back p {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--champagne);
+    }
+
+    /* 4 Single-Choice Scratch Cards */
+    .scratch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+      gap: 20px;
+    }
+    .voucher-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 16px;
+      text-align: center;
+      transition: 0.3s;
+    }
+    .voucher-card.locked-out { opacity: 0.42; pointer-events: none; }
+    .voucher-card.claimed {
+      border-color: var(--gold);
+      box-shadow: 0 0 28px rgba(212, 175, 55, 0.3);
+    }
+    .scratch-wrap {
+      position: relative;
+      width: 100%;
+      height: 150px;
+      border-radius: 14px;
+      overflow: hidden;
+      background: linear-gradient(135deg, #2A182D, #1A0F1D);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 12px;
+    }
+    .prize-text h3 {
+      font-family: 'Playfair Display', serif;
+      color: var(--champagne);
+      font-size: 1.15rem;
+      margin-bottom: 4px;
+    }
+    .prize-text p { font-size: 0.82rem; color: var(--muted); }
+    canvas.scratch-foil {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      cursor: crosshair;
+      touch-action: none;
+    }
+    .claim-btn {
+      margin-top: 12px;
+      width: 100%;
+      padding: 10px;
+      border-radius: 999px;
+      border: 1px solid var(--gold);
+      background: rgba(212, 175, 55, 0.15);
+      color: var(--champagne);
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .claim-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .claim-banner {
+      margin-top: 22px;
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      color: var(--gold);
+      font-size: 1.15rem;
+    }
+
+    /* Open When Envelopes */
+    .envelope-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .envelope {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px 18px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.25s;
+    }
+    .envelope:hover {
+      transform: translateY(-4px);
+      border-color: var(--rose-gold);
+      background: var(--bg-elevated);
+    }
+    .wax-seal {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #E6C15C, #9C7818);
+      color: #1A0E05;
+      font-weight: 700;
+      font-size: 0.78rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px;
+      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.35);
+    }
+    .envelope h4 {
+      font-family: 'Playfair Display', serif;
+      color: var(--cream);
+      font-size: 1.02rem;
+    }
+
+    /* Final Keepsake Letter */
+    .final-letter {
+      background: linear-gradient(180deg, #19101C, #120B14);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      border-radius: 26px;
+      padding: 44px 32px;
+      max-width: 760px;
+      margin: 0 auto;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+      position: relative;
+    }
+    .final-letter h3 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.6rem;
+      color: var(--rose-gold);
+      margin-bottom: 18px;
+    }
+    .final-letter p {
+      color: var(--cream);
+      font-size: 1.02rem;
+      margin-bottom: 16px;
+      line-height: 1.8;
+    }
+    .letter-signoff {
+      margin-top: 26px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .letter-signoff .sig {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      color: var(--champagne);
+      font-size: 1.15rem;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 3, 7, 0.82);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 500;
+      padding: 20px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal-card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--rose-gold);
+      border-radius: 22px;
+      max-width: 480px;
+      width: 100%;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.65);
+    }
+    .modal-card h3 {
+      font-family: 'Playfair Display', serif;
+      color: var(--champagne);
+      margin-bottom: 14px;
+      font-size: 1.4rem;
+    }
+    .modal-card p { color: var(--cream); margin-bottom: 20px; line-height: 1.7; }
+
+    footer {
+      text-align: center;
+      padding: 36px 20px 50px;
+      color: var(--muted);
+      font-size: 0.88rem;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="floating-hearts" id="hearts-bg"></div>
+  <canvas id="confetti-canvas"></canvas>
+
+  <nav>
+    <div class="nav-brand">For Nazia ♥</div>
+    <div class="nav-actions">
+      <button class="btn-sm" id="music-btn" onclick="toggleBirthdaySong()">🎵 Play Song</button>
+      <a href="#vouchers" class="btn-sm" style="text-decoration:none;">🎁 Gifts</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <!-- Hero -->
+    <header class="hero">
+      <div class="badge">Today Is All About Nazia • From Izhan Ali ♥</div>
+      <h1>Happy Birthday, <span class="script-name">Nazia!</span></h1>
+      <p>Every smile of yours lights up my world. I put together this little corner of surprises just to celebrate the most wonderful person in my life.</p>
+      <div class="byline">Crafted with all my love, for you — by Izhan Ali ♥</div>
+      <button class="btn-primary" onclick="celebrateNow()">✨ Celebrate You! ✨</button>
+    </header>
+
+    <!-- Interactive Cake -->
+    <section id="cake-sec">
+      <div class="sec-header">
+        <h2>Make a Birthday Wish</h2>
+        <p>Tap each candle flame to blow it out, Nazia</p>
+      </div>
+      <div class="cake-box">
+        <div class="candles" id="candles-row">
+          <div class="candle" onclick="blowCandle(this)"><div class="flame"></div></div>
+          <div class="candle" onclick="blowCandle(this)"><div class="flame"></div></div>
+          <div class="candle" onclick="blowCandle(this)"><div class="flame"></div></div>
+          <div class="candle" onclick="blowCandle(this)"><div class="flame"></div></div>
+          <div class="candle" onclick="blowCandle(this)"><div class="flame"></div></div>
+        </div>
+        <div class="cake-tier-top"></div>
+        <div class="cake-tier-bottom"></div>
+        <button class="btn-sm" onclick="blowAllCandles()">💨 Blow All Candles at Once</button>
+        <div class="wish-reveal" id="wish-msg">
+          ✨ Make a Wish, Nazia! May every dream in your heart come true this year — Izhan Ali ♥
+        </div>
+      </div>
+    </section>
+
+    <!-- Birthday Queen Gallery (Pre-linked to 1.jpeg through 7.jpeg) -->
+    <section id="queen-gallery">
+      <div class="sec-header">
+        <h2>Birthday Queen 👑</h2>
+        <p>Every look, every smile — effortlessly breathtaking</p>
+      </div>
+      <div class="photo-grid" id="queen-grid">
+        <div class="photo-frame"><img src="1.jpeg" alt="Nazia 1"><div class="photo-caption">Pure elegance ✨</div></div>
+        <div class="photo-frame"><img src="2.jpeg" alt="Nazia 2"><div class="photo-caption">That captivating gaze ♥</div></div>
+        <div class="photo-frame"><img src="3.jpeg" alt="Nazia 3"><div class="photo-caption">Sunshine in human form 🌸</div></div>
+        <div class="photo-frame"><img src="4.jpeg" alt="Nazia 4"><div class="photo-caption">Effortless grace 💫</div></div>
+        <div class="photo-frame"><img src="5.jpeg" alt="Nazia 5"><div class="photo-caption">My favorite view 💖</div></div>
+        <div class="photo-frame"><img src="6.jpeg" alt="Nazia 6"><div class="photo-caption">Timeless beauty 🖤</div></div>
+        <div class="photo-frame"><img src="7.jpeg" alt="Nazia 7"><div class="photo-caption">Forever my queen 👑</div></div>
+      </div>
+    </section>
+
+    <!-- Our Favorite Moments Polaroids -->
+    <section id="moments">
+      <div class="sec-header">
+        <h2>Our Favorite Moments</h2>
+        <p>Tap any Polaroid to flip it and read a hidden note</p>
+      </div>
+      <div class="polaroid-grid" id="polaroid-grid">
+        <div class="polaroid" onclick="this.classList.toggle('flipped')">
+          <div class="polaroid-inner">
+            <div class="polaroid-front">
+              <img src="5.jpeg" alt="Moment 1">
+              <span>Nazia, my favorite person ✨</span>
+            </div>
+            <div class="polaroid-back">
+              <p>"Every ordinary moment becomes my favorite memory whenever I'm with you, Nazia."</p>
+            </div>
+          </div>
+        </div>
+        <div class="polaroid" onclick="this.classList.toggle('flipped')">
+          <div class="polaroid-inner">
+            <div class="polaroid-front">
+              <img src="3.jpeg" alt="Moment 2">
+              <span>Your gorgeous smile ♥</span>
+            </div>
+            <div class="polaroid-back">
+              <p>"Seeing you happy is the easiest and best part of my every single day."</p>
+            </div>
+          </div>
+        </div>
+        <div class="polaroid" onclick="this.classList.toggle('flipped')">
+          <div class="polaroid-inner">
+            <div class="polaroid-front">
+              <img src="7.jpeg" alt="Moment 3">
+              <span>Always & Forever 💫</span>
+            </div>
+            <div class="polaroid-back">
+              <p>"Here's to a lifetime more of laughs, late-night talks, and adventures together — Izhan."</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 Single-Choice Scratch Cards -->
+    <section id="vouchers">
+      <div class="sec-header">
+        <h2>Your Birthday Scratch Cards 🎟️</h2>
+        <p>Scratch the gold foil to reveal all 4 surprises — then choose <strong>1</strong> gift to lock in!</p>
+      </div>
+      <div class="scratch-grid">
+        <div class="voucher-card" id="vcard-0">
+          <div class="scratch-wrap">
+            <div class="prize-text">
+              <h3>#1 Romantic Date Night 🕯️</h3>
+              <p>Candlelit dinner, your favorite food & full princess treatment by Izhan Ali.</p>
+            </div>
+            <canvas class="scratch-foil" data-idx="0"></canvas>
+          </div>
+          <button class="claim-btn" id="cbtn-0" onclick="claimGift(0, 'Romantic Date Night 🕯️')">Claim This Gift 👑</button>
+        </div>
+
+        <div class="voucher-card" id="vcard-1">
+          <div class="scratch-wrap">
+            <div class="prize-text">
+              <h3>#2 Shopping & Treat Spree 🛍️</h3>
+              <p>Pick out whatever catches your eye — my treat, no questions asked.</p>
+            </div>
+            <canvas class="scratch-foil" data-idx="1"></canvas>
+          </div>
+          <button class="claim-btn" id="cbtn-1" onclick="claimGift(1, 'Shopping & Treat Spree 🛍️')">Claim This Gift 👑</button>
+        </div>
+
+        <div class="voucher-card" id="vcard-2">
+          <div class="scratch-wrap">
+            <div class="prize-text">
+              <h3>#3 Cozy Movie & Pamper Night 🍿</h3>
+              <p>Your movie picks, endless snacks, desserts & zero stress.</p>
+            </div>
+            <canvas class="scratch-foil" data-idx="2"></canvas>
+          </div>
+          <button class="claim-btn" id="cbtn-2" onclick="claimGift(2, 'Cozy Movie & Pamper Night 🍿')">Claim This Gift 👑</button>
+        </div>
+
+        <div class="voucher-card" id="vcard-3">
+          <div class="scratch-wrap">
+            <div class="prize-text">
+              <h3>#4 Ultimate Hangout Day 🚗</h3>
+              <p>Long drives, good music, coffee stops & an entire day planned around you.</p>
+            </div>
+            <canvas class="scratch-foil" data-idx="3"></canvas>
+          </div>
+          <button class="claim-btn" id="cbtn-3" onclick="claimGift(3, 'Ultimate Hangout Day 🚗')">Claim This Gift 👑</button>
+        </div>
+      </div>
+      <div class="claim-banner" id="claim-status"></div>
+    </section>
+
+    <!-- Open When Letters -->
+    <section id="letters">
+      <div class="sec-header">
+        <h2>"Open When..." Love Notes 💌</h2>
+        <p>Tap any wax-sealed envelope whenever you need a reminder of how much you're loved</p>
+      </div>
+      <div class="envelope-grid">
+        <div class="envelope" onclick="openLetter('Open When You Need a Smile', 'Just remember that your smile is my absolute favorite thing in this world, Nazia. No matter what kind of day you are having, you are effortlessly amazing and deeply loved. — Izhan Ali ♥')">
+          <div class="wax-seal">IA♥N</div>
+          <h4>Open when you need a smile</h4>
+        </div>
+        <div class="envelope" onclick="openLetter('Open When You Miss Me', 'Close your eyes for a second and know that you are always on my mind. Text or call me right now — I am always right here for you. — Forever yours, Izhan Ali ♥')">
+          <div class="wax-seal">IA♥N</div>
+          <h4>Open when you miss me</h4>
+        </div>
+        <div class="envelope" onclick="openLetter('Open When You Are Stressed', 'Take a deep breath, my love. You handle everything with so much grace, and you never have to carry anything alone. Lean on me whenever you need. — Izhan Ali ♥')">
+          <div class="wax-seal">IA♥N</div>
+          <h4>Open when you feel overwhelmed</h4>
+        </div>
+        <div class="envelope" onclick="openLetter('Open On Your Birthday Night', 'As your birthday winds down, I hope today made you feel even a fraction as special as you make me feel every single day of the year. Happy Birthday, Nazia! — Izhan Ali ♥')">
+          <div class="wax-seal">IA♥N</div>
+          <h4>Open on your birthday night</h4>
+        </div>
+      </div>
+    </section>
+
+    <!-- Final Birthday Letter by Izhan Ali -->
+    <section id="final-keepsake">
+      <div class="sec-header">
+        <h2>A Letter From My Heart</h2>
+        <p>Written just for you on your special day</p>
+      </div>
+      <div class="final-letter">
+        <h3>My Dearest Nazia,</h3>
+        <p>Happy Birthday, my love. Today isn't just another date on the calendar—it's the day the world became brighter, warmer, and infinitely better because you came into it.</p>
+        <p>From your effortless grace to the way your eyes light up when you laugh, everything about you means more to me than words could ever capture. Thank you for being my favorite person, my peace, and my happiest place.</p>
+        <p>May this new year of your life bring you endless joy, answered prayers, and every single dream you hold close to your heart. No matter where life takes us, I will always be right beside you, cheering you on and loving you more with every passing day.</p>
+        <div class="letter-signoff">
+          <div class="sig">With all my heart, forever yours —<br><strong>Izhan Ali ♥</strong></div>
+          <div class="wax-seal" style="width:52px;height:52px;margin:0;">IA♥N</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    Made with endless love for Nazia • By Izhan Ali ♥
+  </footer>
+
+  <!-- Envelope Modal -->
+  <div class="modal-backdrop" id="letter-modal" onclick="if(event.target===this) closeModal()">
+    <div class="modal-card">
+      <div class="wax-seal">IA♥N</div>
+      <h3 id="modal-title"></h3>
+      <p id="modal-body"></p>
+      <button class="btn-primary" onclick="closeModal()">Close Letter ♥</button>
+    </div>
+  </div>
+
+  <script>
+    const heartsBg = document.getElementById('hearts-bg');
+    for (let i = 0; i < 18; i++) {
+      const h = document.createElement('div');
+      h.className = 'heart-particle';
+      h.textContent = '♥';
+      h.style.left = Math.random() * 100 + 'vw';
+      h.style.animationDuration = (8 + Math.random() * 10) + 's';
+      h.style.animationDelay = (Math.random() * 8) + 's';
+      heartsBg.appendChild(h);
+    }
+
+    let audioCtx = null;
+    let isPlaying = false;
+    let songTimers = [];
+
+    function toggleBirthdaySong() {
+      if (isPlaying) stopBirthdaySong();
+      else playBirthdaySong();
+    }
+
+    function stopBirthdaySong() {
+      isPlaying = false;
+      songTimers.forEach(t => clearTimeout(t));
+      songTimers = [];
+      document.getElementById('music-btn').textContent = '🎵 Play Song';
+    }
+
+    function playBirthdaySong() {
+      stopBirthdaySong();
+      isPlaying = true;
+      document.getElementById('music-btn').textContent = '⏸ Pause Song';
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+
+      const notes = [
+        [261.63, 0.35], [261.63, 0.35], [293.66, 0.7], [261.63, 0.7], [349.23, 0.7], [329.63, 1.3],
+        [261.63, 0.35], [261.63, 0.35], [293.66, 0.7], [261.63, 0.7], [392.00, 0.7], [349.23, 1.3],
+        [261.63, 0.35], [261.63, 0.35], [523.25, 0.7], [440.00, 0.7], [349.23, 0.7], [329.63, 0.7], [293.66, 1.2],
+        [466.16, 0.35], [466.16, 0.35], [440.00, 0.7], [349.23, 0.7], [392.00, 0.7], [349.23, 1.4]
+      ];
+
+      let time = 0;
+      notes.forEach(([freq, dur]) => {
+        const id = setTimeout(() => {
+          if (!isPlaying) return;
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.value = freq;
+          gain.gain.setValueAtTime(0.18, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start();
+          osc.stop(audioCtx.currentTime + dur);
+        }, time * 1000);
+        songTimers.push(id);
+        time += dur + 0.05;
+      });
+
+      const endId = setTimeout(() => stopBirthdaySong(), time * 1000);
+      songTimers.push(endId);
+    }
+
+    function celebrateNow() {
+      playBirthdaySong();
+      launchConfetti();
+    }
+
+    function launchConfetti() {
+      const canvas = document.getElementById('confetti-canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const colors = ['#E8A598', '#F5D0A9', '#D4AF37', '#FF758F', '#FFFFFF'];
+      const pieces = Array.from({ length: 130 }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height - canvas.height,
+        r: 4 + Math.random() * 6,
+        c: colors[Math.floor(Math.random() * colors.length)],
+        vy: 2 + Math.random() * 4,
+        vx: -2 + Math.random() * 4
+      }));
+      let frames = 0;
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        pieces.forEach(p => {
+          ctx.fillStyle = p.c;
+          ctx.fillRect(p.x, p.y, p.r, p.r * 1.4);
+          p.y += p.vy;
+          p.x += p.vx;
+        });
+        if (++frames < 180) requestAnimationFrame(draw);
+        else ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+      draw();
+    }
+
+    function blowCandle(el) {
+      el.classList.add('out');
+      checkAllCandles();
+    }
+    function blowAllCandles() {
+      document.querySelectorAll('.candle').forEach(c => c.classList.add('out'));
+      checkAllCandles();
+    }
+    function checkAllCandles() {
+      const remaining = document.querySelectorAll('.candle:not(.out)').length;
+      if (remaining === 0) {
+        document.getElementById('wish-msg').style.display = 'block';
+        launchConfetti();
+      }
+    }
+
+    document.querySelectorAll('canvas.scratch-foil').forEach(canvas => {
+      const ctx = canvas.getContext('2d');
+      canvas.width = 300;
+      canvas.height = 160;
+      const grad = ctx.createLinearGradient(0, 0, 300, 160);
+      grad.addColorStop(0, '#D4AF37');
+      grad.addColorStop(0.5, '#F5D0A9');
+      grad.addColorStop(1, '#B8860B');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 300, 160);
+      ctx.fillStyle = '#241409';
+      ctx.font = 'bold 16px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('✨ SCRATCH HERE ✨', 150, 86);
+
+      let scratching = false;
+      function scratch(e) {
+        if (!scratching) return;
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        const x = (clientX - rect.left) * (canvas.width / rect.width);
+        const y = (clientY - rect.top) * (canvas.height / rect.height);
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.beginPath();
+        ctx.arc(x, y, 22, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      canvas.addEventListener('mousedown', () => scratching = true);
+      canvas.addEventListener('mouseup', () => scratching = false);
+      canvas.addEventListener('mousemove', scratch);
+      canvas.addEventListener('touchstart', (e) => { scratching = true; scratch(e); });
+      canvas.addEventListener('touchend', () => scratching = false);
+      canvas.addEventListener('touchmove', scratch);
+    });
+
+    let giftLocked = false;
+    function claimGift(idx, title) {
+      if (giftLocked) return;
+      giftLocked = true;
+      for (let i = 0; i < 4; i++) {
+        const card = document.getElementById('vcard-' + i);
+        const btn = document.getElementById('cbtn-' + i);
+        if (i === idx) {
+          card.classList.add('claimed');
+          btn.textContent = '👑 Claimed by Nazia!';
+        } else {
+          card.classList.add('locked-out');
+          btn.textContent = 'Saved for next time ♥';
+        }
+        btn.disabled = true;
+      }
+      document.getElementById('claim-status').textContent =
+        `👑 Nazia has officially claimed: ${title} — redeemed by Izhan Ali!`;
+      launchConfetti();
+    }
+
+    function openLetter(title, body) {
+      document.getElementById('modal-title').textContent = title;
+      document.getElementById('modal-body').textContent = body;
+      document.getElementById('letter-modal').classList.add('open');
+    }
+    function closeModal() {
+      document.getElementById('letter-modal').classList.remove('open');
+    }
+  </script>
+</body>
+</html>
